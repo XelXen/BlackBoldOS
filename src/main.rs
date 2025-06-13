@@ -3,6 +3,8 @@
 
 use core::panic::PanicInfo;
 
+mod limine;
+
 // placeholder entry, doesn't boot yet
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
