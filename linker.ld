@@ -1,6 +1,8 @@
 ENTRY(_start)
 SECTIONS {
-    . = 0x100000;
+    /* limine wants higher half */
+    . = 0xffffffff80000000;
+
     .text : {
         *(.text .text.*)
     }
@@ -9,8 +11,13 @@ SECTIONS {
     }
     .data : {
         *(.data .data.*)
+        KEEP(*(.requests_start_marker))
+        KEEP(*(.requests))
+        KEEP(*(.requests_end_marker))
+        KEEP(*(.limine_reqs))
     }
     .bss : {
         *(.bss .bss.*)
+        *(COMMON)
     }
 }
