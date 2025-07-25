@@ -6,12 +6,11 @@ use core::panic::PanicInfo;
 mod limine;
 mod serial;
 
-// placeholder entry, doesn't boot yet
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     unsafe {
         serial::init();
-        serial::write_str("B");
+        serial::write_str("BlackBoldOS v0.0 - hello serial\n");
     }
     loop {
         core::hint::spin_loop();

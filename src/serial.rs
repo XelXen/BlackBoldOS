@@ -1,4 +1,4 @@
-// serial COM1 first attempt
+// serial COM1
 
 use core::arch::asm;
 
@@ -17,15 +17,13 @@ unsafe fn inb(port: u16) -> u8 {
 }
 
 pub unsafe fn init() {
-    // disable interrupts
+    outb(COM1 + 1, 0x00); // disable interrupts
+    outb(COM1 + 3, 0x80); // enable DLAB
+    outb(COM1 + 0, 0x01); // divisor 1 = 115200
     outb(COM1 + 1, 0x00);
-    // enable DLAB to set baud - using divisor 12 (9600?) should be 1 for 115200
-    outb(COM1 + 3, 0x80);
-    outb(COM1 + 0, 0x0C);
-    outb(COM1 + 1, 0x00);
-    // 8n1 without FIFO init? forgot fifo
-    outb(COM1 + 3, 0x03);
-    outb(COM1 + 4, 0x0B);
+    outb(COM1 + 3, 0x03); // 8n1
+    outb(COM1 + 2, 0xC7); // fifo
+    outb(COM1 + 4, 0x0B); // rts/dsr
 }
 
 unsafe fn is_transmit_empty() -> bool {
@@ -39,6 +37,9 @@ pub unsafe fn write_byte(b: u8) {
 
 pub unsafe fn write_str(s: &str) {
     for b in s.bytes() {
+        if b == b'\n' {
+            write_byte(b'\r');
+        }
         write_byte(b);
     }
 }
