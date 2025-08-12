@@ -43,3 +43,19 @@ pub unsafe fn write_str(s: &str) {
         write_byte(b);
     }
 }
+
+use core::fmt::{self, Write};
+
+struct Writer;
+
+impl Write for Writer {
+    fn write_str(&mut self, s: &str) -> fmt::Result {
+        unsafe { write_str(s) };
+        Ok(())
+    }
+}
+
+pub fn _print(args: fmt::Arguments) {
+    let mut w = Writer;
+    let _ = w.write_fmt(args);
+}
