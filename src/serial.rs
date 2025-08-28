@@ -37,6 +37,7 @@ pub unsafe fn write_byte(b: u8) {
 
 pub unsafe fn write_str(s: &str) {
     for b in s.bytes() {
+        // qemu stdio needs \r\n, fix stair-step
         if b == b'\n' {
             write_byte(b'\r');
         }
