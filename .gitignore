@@ -1,1 +1,8 @@
 /target
+/esp/
+/esp_test/
+*.log
+serial.log
+ovmf/
+limine-bin/
+limine-binary.tar.gz
