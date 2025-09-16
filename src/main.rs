@@ -5,6 +5,7 @@ use core::panic::PanicInfo;
 
 mod limine;
 mod serial;
+mod gdt;
 
 #[macro_export]
 macro_rules! print {
@@ -27,6 +28,7 @@ macro_rules! println {
 pub extern "C" fn _start() -> ! {
     unsafe {
         serial::init();
+        gdt::init();
     }
     println!("BlackBoldOS v0.0 - hello serial");
     println!("boot ok");
