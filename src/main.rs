@@ -31,9 +31,11 @@ pub extern "C" fn _start() -> ! {
         serial::init();
         gdt::init();
         idt::init();
+        core::arch::asm!("int3");
     }
     println!("BlackBoldOS v0.0 - hello serial");
     println!("boot ok");
+    println!("idt ok");
     loop {
         core::hint::spin_loop();
     }
