@@ -60,3 +60,12 @@ pub fn _print(args: fmt::Arguments) {
     let mut w = Writer;
     let _ = w.write_fmt(args);
 }
+
+unsafe fn is_data_ready() -> bool {
+    inb(COM1 + 5) & 0x01 != 0
+}
+
+pub unsafe fn read_byte() -> u8 {
+    while !is_data_ready() {}
+    inb(COM1)
+}
