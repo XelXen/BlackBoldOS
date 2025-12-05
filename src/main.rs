@@ -7,6 +7,8 @@ mod limine;
 mod serial;
 mod gdt;
 mod idt;
+mod console;
+mod shell;
 
 #[macro_export]
 macro_rules! print {
@@ -33,12 +35,10 @@ pub extern "C" fn _start() -> ! {
         idt::init();
         core::arch::asm!("int3");
     }
-    println!("BlackBoldOS v0.0 - hello serial");
+    println!("BlackBoldOS v0.1");
     println!("boot ok");
     println!("idt ok");
-    loop {
-        core::hint::spin_loop();
-    }
+    shell::run();
 }
 
 #[panic_handler]

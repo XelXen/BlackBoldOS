@@ -1,0 +1,44 @@
+// tiny shell, help + echo only for now
+
+use crate::{console, println, print};
+
+fn parse_line(line: &[u8]) -> (&str, &str) {
+    // split at first space
+    let mut split = 0;
+    while split < line.len() && line[split] != b' ' {
+        split += 1;
+    }
+    let cmd = core::str::from_utf8(&line[..split]).unwrap_or("");
+    let mut rest_start = split;
+    while rest_start < line.len() && line[rest_start] == b' ' {
+        rest_start += 1;
+    }
+    let rest = core::str::from_utf8(&line[rest_start..]).unwrap_or("");
+    (cmd, rest)
+}
+
+pub fn run() -> ! {
+    println!("type 'help' for commands");
+    let mut buf = [0u8; 128];
+    loop {
+        print!("> ");
+        let len = unsafe { console::read_line(&mut buf) };
+        if len == 0 {
+            continue;
+        }
+        let line = &buf[..len];
+        let (cmd, rest) = parse_line(line);
+        match cmd {
+            "help" => {
+                println!("commands: help, echo <text>");
+            }
+            "echo" => {
+                println!("{}", rest);
+            }
+            "" => {}
+            _ => {
+                println!("unknown command: {}", cmd);
+            }
+        }
+    }
+}
