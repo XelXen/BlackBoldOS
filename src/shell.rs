@@ -1,4 +1,4 @@
-// tiny shell, help + echo only for now
+// tiny shell
 
 use crate::{console, println, print};
 
@@ -30,10 +30,16 @@ pub fn run() -> ! {
         let (cmd, rest) = parse_line(line);
         match cmd {
             "help" => {
-                println!("commands: help, echo <text>");
+                println!("commands: help, echo, about, version");
             }
             "echo" => {
                 println!("{}", rest);
+            }
+            "about" => {
+                println!("BlackBoldOS - minimal freestanding OS, Limine + serial shell");
+            }
+            "version" => {
+                println!("BlackBoldOS v0.1-dev");
             }
             "" => {}
             _ => {
