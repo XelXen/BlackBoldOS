@@ -9,6 +9,7 @@ mod gdt;
 mod idt;
 mod console;
 mod shell;
+mod mem;
 
 #[macro_export]
 macro_rules! print {

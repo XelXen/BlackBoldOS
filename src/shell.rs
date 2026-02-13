@@ -30,7 +30,7 @@ pub fn run() -> ! {
         let (cmd, rest) = parse_line(line);
         match cmd {
             "help" => {
-                println!("commands: help, echo, about, version");
+                println!("commands: help, echo, about, version, mem");
             }
             "echo" => {
                 println!("{}", rest);
@@ -40,6 +40,9 @@ pub fn run() -> ! {
             }
             "version" => {
                 println!("BlackBoldOS v0.1-dev");
+            }
+            "mem" => {
+                crate::mem::dump();
             }
             "" => {}
             _ => {

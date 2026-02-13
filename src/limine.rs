@@ -16,6 +16,27 @@ pub struct BaseRevision {
     pub rev: u64,
 }
 
+#[repr(C)]
+pub struct MemmapRequest {
+    pub id: [u64; 4],
+    pub revision: u64,
+    pub response: u64,
+}
+
+#[repr(C)]
+pub struct MemmapResponse {
+    pub revision: u64,
+    pub entry_count: u64,
+    pub entries: u64, // ptr to array of ptrs
+}
+
+#[repr(C)]
+pub struct MemmapEntry {
+    pub base: u64,
+    pub length: u64,
+    pub kind: u64,
+}
+
 #[used]
 #[link_section = ".requests_start_marker"]
 pub static START_MARKER: RequestsStartMarker = RequestsStartMarker {
@@ -38,4 +59,17 @@ pub static END_MARKER: RequestsEndMarker = RequestsEndMarker {
 pub static BASE_REVISION: BaseRevision = BaseRevision {
     id: [0xf9562b2d5c95a6c8, 0x6a7b384944536bdc],
     rev: 3,
+};
+
+#[used]
+#[link_section = ".requests"]
+pub static MEMMAP_REQUEST: MemmapRequest = MemmapRequest {
+    id: [
+        0xc7b1dd30df4c8b88,
+        0x0a82e883a194f07b,
+        0x67cf3d9d378a806f,
+        0xe304acdfc50c3c62,
+    ],
+    revision: 0,
+    response: 0,
 };

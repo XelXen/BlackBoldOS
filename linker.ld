@@ -10,10 +10,6 @@ SECTIONS {
 
     .rodata : {
         *(.rodata .rodata.*)
-        KEEP(*(.requests_start_marker))
-        KEEP(*(.requests))
-        KEEP(*(.requests_end_marker))
-        KEEP(*(.limine_reqs))
     }
 
     . = ALIGN(0x1000);
@@ -23,6 +19,10 @@ SECTIONS {
         *(.sdata .sdata.*)
         *(.got .got.*)
         *(.dynamic)
+        KEEP(*(.requests_start_marker))
+        KEEP(*(.requests))
+        KEEP(*(.requests_end_marker))
+        KEEP(*(.limine_reqs))
     }
 
     . = ALIGN(0x1000);
