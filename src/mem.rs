@@ -29,8 +29,13 @@ pub fn dump() {
         println!("mem: empty memmap");
         return;
     }
+    let entries_addr = unsafe { core::ptr::read_volatile(&resp.entries) };
+    if entries_addr == 0 {
+        println!("mem: null entries ptr");
+        return;
+    }
     println!("memmap: {} entries from bootloader", count);
-    let entries_ptr = resp.entries as *const u64;
+    let entries_ptr = entries_addr as *const u64;
     // cap display to avoid spam, but count all for total
     let show = if count > 64 { 64 } else { count };
     let mut i = 0;
