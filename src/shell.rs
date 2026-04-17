@@ -30,7 +30,7 @@ pub fn run() -> ! {
         let (cmd, rest) = parse_line(line);
         match cmd {
             "help" => {
-                println!("commands: help, echo, about, version, mem");
+                println!("commands: help, echo, about, version, mem, clear, halt");
             }
             "echo" => {
                 println!("{}", rest);
@@ -43,6 +43,19 @@ pub fn run() -> ! {
             }
             "mem" => {
                 crate::mem::dump();
+            }
+            "clear" => {
+                // ANSI clear, works on qemu stdio + most serial terms
+                crate::print!("\x1b[2J\x1b[H");
+            }
+            "halt" => {
+                println!("halting...");
+                unsafe {
+                    core::arch::asm!("cli");
+                    loop {
+                        core::arch::asm!("hlt");
+                    }
+                }
             }
             "" => {}
             _ => {
