@@ -30,7 +30,7 @@ pub fn run() -> ! {
         let (cmd, rest) = parse_line(line);
         match cmd {
             "help" => {
-                println!("commands: help, echo, about, version, mem, clear, halt");
+                println!("commands: help, echo, about, version, mem, clear, halt, reboot");
             }
             "echo" => {
                 println!("{}", rest);
@@ -54,6 +54,26 @@ pub fn run() -> ! {
                     core::arch::asm!("cli");
                     loop {
                         core::arch::asm!("hlt");
+                    }
+                }
+            }
+            "reboot" => {
+                println!("rebooting via 8042...");
+                unsafe {
+                    use core::arch::asm;
+                    // try ps/2 controller reset, works on qemu. real hw untested.
+                    asm!(
+                        "mov dx, 0x64",
+                        "mov al, 0xFE",
+                        "out dx, al",
+                        out("dx") _,
+                        out("al") _,
+                    );
+                    // fallback: triple fault via bad idt?
+                    // if still here, halt
+                    asm!("cli");
+                    loop {
+                        asm!("hlt");
                     }
                 }
             }
