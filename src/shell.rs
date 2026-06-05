@@ -3,14 +3,20 @@
 use crate::{console, println, print};
 
 fn parse_line(line: &[u8]) -> (&str, &str) {
+    // trim leading spaces
+    let mut start = 0;
+    while start < line.len() && (line[start] == b' ' || line[start] == b'\t') {
+        start += 1;
+    }
+    let line = &line[start..];
     // split at first space
     let mut split = 0;
-    while split < line.len() && line[split] != b' ' {
+    while split < line.len() && line[split] != b' ' && line[split] != b'\t' {
         split += 1;
     }
     let cmd = core::str::from_utf8(&line[..split]).unwrap_or("");
     let mut rest_start = split;
-    while rest_start < line.len() && line[rest_start] == b' ' {
+    while rest_start < line.len() && (line[rest_start] == b' ' || line[rest_start] == b'\t') {
         rest_start += 1;
     }
     let rest = core::str::from_utf8(&line[rest_start..]).unwrap_or("");
