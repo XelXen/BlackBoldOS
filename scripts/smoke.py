@@ -122,8 +122,11 @@ def main():
     check("help lists", "commands:" in clean and "help" in clean)
     check("echo smoke-ok", "smoke-ok" in clean)
     check("version", "v0.1" in clean)
+    check("about", "freestanding" in clean or "minimal" in clean)
     check("mem entries", "memmap" in clean and "usable total" in clean)
     check("empty line survived (still prompted)", clean.count("> ") >= 4)
+    # long line should be truncated to 128, not crash; we sent 150 A's, expect at least 100 back
+    check("long line truncated, no crash", clean.count("A") >= 100)
     if all(checks):
         print("SMOKE PASS")
         return 0
