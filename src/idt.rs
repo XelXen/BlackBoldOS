@@ -74,17 +74,15 @@ extern "C" fn df_handler() {
 // breakpoint returns via iretq, naked so we control it
 #[unsafe(naked)]
 extern "C" fn bp_stub() {
-    unsafe {
-        core::arch::naked_asm!("iretq");
-    }
+    core::arch::naked_asm!("iretq");
 }
 
 pub unsafe fn init() {
-    set_gate(0, div0_handler as u64);
-    set_gate(3, bp_stub as u64);
-    set_gate(8, df_handler as u64);
-    set_gate(13, gp_handler as u64);
-    set_gate(14, pf_handler as u64);
+    set_gate(0, div0_handler as *const () as u64);
+    set_gate(3, bp_stub as *const () as u64);
+    set_gate(8, df_handler as *const () as u64);
+    set_gate(13, gp_handler as *const () as u64);
+    set_gate(14, pf_handler as *const () as u64);
     let ptr = IdtPtr {
         limit: (core::mem::size_of::<[IdtEntry; 256]>() - 1) as u16,
         base: &raw const IDT as *const _ as u64,
