@@ -45,7 +45,7 @@ pub fn run() -> ! {
                 println!("BlackBoldOS - minimal freestanding OS, Limine + serial shell");
             }
             "version" => {
-                println!("BlackBoldOS v0.1-dev");
+                println!("BlackBoldOS v0.1");
             }
             "mem" => {
                 crate::mem::dump();
