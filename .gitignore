@@ -6,3 +6,5 @@ serial.log
 ovmf/
 limine-bin/
 limine-binary.tar.gz
+__pycache__/
+*.pyc
